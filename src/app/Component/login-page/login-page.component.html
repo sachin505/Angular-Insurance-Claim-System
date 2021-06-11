@@ -1,0 +1,59 @@
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+        integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<div class="header">
+    <img
+        src="https://b2bm.s3.amazonaws.com/styles/default_image/s3/capgemini-reveals-new-brand-identity-new-messages-to-mark-anniversary.jpg?itok=q-awdRDI">
+    <h1>INSURANCE CLAIM</h1>
+</div>
+<div id="bodyid">
+    <div class="container h-100">
+        <div class="d-flex justify-content-center h-100">
+            <div class="user_card">
+                <div class="d-flex justify-content-center">
+                    <div class="brand_logo_container">
+                        <img src="https://www.seekpng.com/png/small/825-8250406_mortgages-icon-insurance-icon-youtube-logo-vector-circle.png"
+                            class="brand_logo" alt="Logo">
+                            <br>
+                            <br>
+                           <h4 *ngIf="invalidCredentials" style="color: red;">{{invalidCredentials}}</h4>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-center form_container">
+                    <form #f="ngForm" (ngSubmit)="formSubmitFun(f)">
+                        <span *ngIf="usn.invalid && usn.touched" style="color:rgba(206, 26, 26, 0.877)">UserName is Required</span>
+                        <div class="input-group mb-3">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" name="username" class="form-control input_user" value=""
+                                placeholder="Username" [(ngModel)]="username" required ngModel #usn="ngModel">
+                        </div>
+                        <span *ngIf="pwd.invalid && pwd.touched" style="color:rgba(206, 26, 26, 0.877)">Password is Required</span>
+                        <div class="input-group mb-2">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="fas fa-key"></i></span>
+                            </div>
+                            <input type="password" name="password" class="form-control input_pass" value=""
+                                placeholder="Password" [(ngModel)]="password" required ngModel #pwd="ngModel">
+                        </div>
+                        <div class="d-flex justify-content-center mt-3 login_container">
+                            <button type="submit" name="button" class="btn login_btn" (click)="login()" >LOGIN</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <h4>copyright &#169; , 2021</h4>
+</div>

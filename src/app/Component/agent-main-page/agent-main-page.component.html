@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+    <div class="header">
+        <img
+            src="https://b2bm.s3.amazonaws.com/styles/default_image/s3/capgemini-reveals-new-brand-identity-new-messages-to-mark-anniversary.jpg?itok=q-awdRDI">
+        <h1>INSURANCE CLAIM</h1>
+        <div>
+            <h4 style="color: white;">{{user}}</h4>
+            <button type="button" class="btn btn-danger" (click)="logout()">LOGOUT</button>
+        </div>
+    </div>
+
+    <div class="row" id="middleMain">
+        <div class="column side">
+            <div class="card" id="sidecard">
+                <br>
+                <h1><u>AGENT</u></h1>
+                <hr><br>
+                <h2 id="leftside" (click)="showAgentHome()">Home</h2><br>
+                <h2 id="leftside" (click)="showViewCustomers()">VIEW CUSTOMERS</h2><br>
+            </div>
+        </div>
+
+        <div class="column middle">
+            <div class="row" id="imagetext" *ngIf="showHome">
+                <div class="column">
+                    <img
+                        src="https://image.freepik.com/free-vector/insurance-agent-illustration-with-agent-explaining-about-insurance-family-as-concept-this-illustration-can-be-use-website-landing-page-web-app-banner_9829-20.jpg">
+                </div>
+                <div class="column">
+                    <h3>
+                        <!-- The claimant must submit the written intimation as soon as possible to
+                        enable
+                        the insurance company to initiate the claim processing. The claim intimation
+                        should consist of basic information such as policy number, name of the
+                        insured,
+                        date of death, cause of death, place of death, name of the claimant. -->
+                       <p> Agent works as a channel between insured and admin where can view his customers policies and create a claim for them</p> 
+                    </h3>
+                </div>
+            </div>
+            <!--view customers start-->
+            <div *ngIf="showCustomers">
+                <h1><u>YOUR CUSTOMERS</u></h1>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <th scope="col">User Name</th>
+                            <th scope="col">Acocunt Number</th>
+                            <th scope="col">Policy Number</th>
+                            <th scope="col">Policy Premium</th>
+                            <th scope="col">Action</th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let insured of agentCustomers">
+                                <td scope="row">{{insured.id}}</td>
+                                <td>{{insured.accountnumber}}</td>
+                                <td>{{insured.policynumber}}</td>
+                                <td>{{insured.policypremium | currency:"INR"}}</td>
+                                <td *ngIf="insured.claim.claimNumber==undefined">
+                                    <button type="button" class="btn btn-primary"
+                                        (click)=" showCreateClaim(insured.id)">Create
+                                        Claim</button>
+                                </td>
+                                <td *ngIf="insured.claim.claimNumber!=undefined">
+                                    <button type="button" class="btn btn-primary"
+                                        (click)=" showViewClaim(insured.id)">View
+                                        Claim</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--view customers end-->
+            <div *ngIf="showClaim">
+                <h1><u>VIEW CLAIM</u></h1>
+                <div class="card border-dark mb-3" style="max-width: 90rem;" id="policyDetails">
+                    <div class="card-header" style="font-weight: bold;">Claim Details</div>
+                    <div class="card-body text-dark">
+                        <h1 class="card-title" style="color: black;">Claim Details of : {{currentCustomer.id}} </h1>
+                        <p class="card-text"><b>Claim Number</b> : {{currentCustomer.claim.claimNumber}}</p>
+                        <p class="card-text"><b>Claim Reason</b> : {{currentCustomer.claim.claimReason}}</p>
+                        <p class="card-text"><b>Accident Street</b> :{{currentCustomer.claim.accidentLocationStreet}}
+                        </p>
+                        <p class="card-text"><b>Accident City</b> : {{currentCustomer.claim.accidentCity}}</p>
+                        <p class="card-text"><b>Accident State</b> : {{currentCustomer.claim.accidentState}}</p>
+                        <p class="card-text"><b>Claim Type</b> :{{currentCustomer.claim.claimType}} </p>
+                        <p class="card-text"><b>Zip Code</b> :{{currentCustomer.claim.zipCode}} </p>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="addClaim">
+                <h1><u>FILL YOUR DETAILS TO CREATE CLAIM</u></h1>
+                <h1 style="color: red;">{{errorMessage}}</h1>
+                <form id="createform">
+                    <div class="form-group">
+                        <label for="claimnnumber">Claim Number</label>
+                        <input type="text" class="form-control" id="claimnnumber" placeholder="Claim Number"
+                            name="claimnumber" [(ngModel)]="claimNumber" disabled required>
+                           
+                    </div>
+                    <div class="form-group">
+                        <label for="claimreason">Claim Reason</label>
+                        <input type="text" class="form-control" id="claimreason" placeholder="Claim Reason"
+                            name="claimReason" [formControl]="claimReason" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="street">Accident Location Street</label>
+                            <input type="text" class="form-control" id="street" placeholder="Street"
+                                name="accidentLocation" [formControl]="accidentLocationStreet" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="city">Accident Location City</label>
+                            <input type="text" class="form-control" id="city" placeholder="City" name="accidentCity"
+                                [formControl]="accidentCity" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="state">Accident Location State</label>
+                            <input type="text" class="form-control" id="state" placeholder="State" name="accidentState"
+                                [formControl]="accidentState" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="zip">Accident Location Zip</label>
+                            <input type="text" class="form-control" id="zip" placeholder="Zip Code"
+                                [formControl]="zipCode" name="accidentLocationZip" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="claimtype">Claim Type</label>
+                        <input type="text" class="form-control" id="claimtype" placeholder="Claim Type" name="claimType"
+                            [formControl]="claimType" required>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-lg btn-block"
+                        (click)="createClaim()">CREATE CLAIM</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <h4>copyright &#169; , 2021</h4>
+    </div>
+</body>
+
+</html>

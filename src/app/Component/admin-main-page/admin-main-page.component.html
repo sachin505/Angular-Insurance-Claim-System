@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+    <div class="header">
+        <img
+            src="https://b2bm.s3.amazonaws.com/styles/default_image/s3/capgemini-reveals-new-brand-identity-new-messages-to-mark-anniversary.jpg?itok=q-awdRDI">
+        <h1>INSURANCE CLAIM</h1>
+        <div>
+            <h4 style="color: white;">{{currentAdmin}}</h4>
+            <button type="button" class="btn btn-danger" (click)="logout()">LOGOUT</button>
+        </div>
+    </div>
+
+    <div class="row" id="middleMain">
+        <div class="column side">
+            <div class="card" id="sidecard">
+                <br>
+                <h1><u>ADMIN</u></h1>
+                <hr><br>
+                <h2 id="leftside" (click)="showAdminHome()">Home</h2><br>
+                <h2 id="leftside" (click)="showViewClaim()">VIEW CLAIM</h2><br>
+                <h2 id="leftside" (click)="showCreateRole()">CREATE ROLE</h2>
+            </div>
+        </div>
+
+        <div class="column middle">
+            <div class="row" id="imagetext" *ngIf="showHome">
+                <div class="column">
+                    <img
+                        src="https://media.istockphoto.com/vectors/flat-metaphor-poster-presenting-insurance-services-cartoon-male-and-vector-id1181901597?k=6&m=1181901597&s=612x612&w=0&h=yd5MI6Cd1QRtoiYklbIc-VVuydDhPKWXMtPW53yuaz8=">
+                </div>
+                <div class="column">
+                    <h3>
+                        <!-- Develop risk management policies for clients, Whether it's a large corporation or an individual.
+                        Reviews and updates insurance policies for clients on a regular basis to ensure accuracy and
+                        efficiency when filing a claim.
+                        Helps clients determine the right policies for their specific needs.He can create the all the
+                        roles
+                        and Approve the claims. -->
+                        Admin who has control over the Insured and Agent. Where he can generate report for a claim and add three UserRoles in the Application.
+                    </h3>
+                </div>
+            </div>
+            <div *ngIf="showClaim">
+                <h1><u>VIEW CLAIM</u></h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">ClaimNumber</th>
+                            <th scope="col">ClaimReason</th>
+                            <th scope="col">AccidentLocationStreet</th>
+                            <th scope="col">AccidentCity</th>
+                            <th scope="col">AccidentZip</th>
+                            <th scope="col">ClaimType</th>
+                            <th scope="col">PolicyNumber</th>
+                            <th scope="col"> Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let customer of allInsured">
+                            <td *ngIf="customer.claim.claimNumber!=undefined">
+                                {{customer.claim.claimNumber}}</td>
+                            <td *ngIf="customer.claim.claimReason!=undefined">
+                                {{customer.claim.claimReason}}</td>
+                            <td *ngIf="customer.claim.accidentLocationStreet!=undefined">
+                                {{customer.claim.accidentLocationStreet}}</td>
+                            <td *ngIf="customer.claim.accidentCity!=undefined">
+                                {{customer.claim.accidentCity}}</td>
+                            <td *ngIf="customer.claim.accidentState!=undefined">
+                                {{customer.claim.accidentState}}</td>
+                            <td *ngIf="customer.claim.zipCode!=undefined">{{customer.claim.zipCode}}
+                            </td>
+                            <td *ngIf="customer.claim.claimType!=undefined">
+                                {{customer.claim.claimType}}</td>
+                            <td *ngIf="customer.claim.claimType!=undefined"><button type="button"
+                                    (click)="showViewGenerateReport(customer.id)" class="btn btn-primary"> Generate
+                                    Report</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="showReport">
+                <h1><u>CLAIM REPORT</u></h1>
+                <div class="card bg-light mb-3" style="max-width: 90rem;">
+                    <div class="card-header" style="font-size: x-large;"><b>Claim Report</b></div>
+                    <div class="card-body">
+                        <h2 class="card-title" style="text-align: center; color: black;">Customer Name:
+                            {{currentCustomer.id}}</h2>
+                        <p class="card-text"><b>Claim Number:</b> {{currentCustomer.claim.claimNumber}}</p>
+                        <p class="card-text"><b>Claim Reason:</b> {{currentCustomer.claim.claimReason}}</p>
+                        <p class="card-text"><b>Accident Location Street:</b>
+                            {{currentCustomer.claim.accidentLocationStreet}}
+                        </p>
+                        <p class="card-text"><b>Accident City:</b> {{currentCustomer.claim.accidentCity}}</p>
+                        <p class="card-text"><b>Accident State:</b> {{currentCustomer.claim.accidentState}}</p>
+                        <p class="card-text"><b>Accident Zip:</b> {{currentCustomer.claim.zipCode}}</p>
+                        <p class="card-text"><b>Claim Type:</b> {{currentCustomer.claim.claimType}}</p>
+                        <p class="card-text" *ngFor="let question of currentCustomer.questions"><b> Question:</b>
+                            {{question.question}}<br><b>Answer:</b> {{question.answer}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!--Create role started-->
+            <div *ngIf="addRole">
+                <h1><u>FILL DETAILS TO CREATE ROLE</u></h1>
+                <h1 style="color: red;">{{errorMessage}}</h1>
+                <form id="createroleformid">
+                    <div>
+                        <label for="username">User Name</label>
+                        <input type="username" class="form-control" id="username" placeholder="User Name"
+                            name="username" [formControl]="userName" required>
+                    </div>
+                    <div>
+                        <label for="Password">Password</label>
+                        <input type="password" class="form-control" id="Password" placeholder="Password" name="password"
+                            [formControl]="password">
+                    </div>
+                    <div>
+                        <label for="rolecode">Role Code</label>
+                        <select class="custom-select" [formControl]="roleCode" required >
+                            <option value="" disabled selected hidden>Role Code</option>
+                            <option>Insured</option>
+                            <option>Agent</option>
+                            <option>Admin</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" (click)="createUserRole()">Create
+                            Role</button>
+                    </div>
+                </form>
+            </div>
+            <!--Create role ends-->
+        </div>
+    </div>
+    <div class="footer">
+        <h4>copyright &#169; , 2021</h4>
+    </div>
+</body>
+
+</html>

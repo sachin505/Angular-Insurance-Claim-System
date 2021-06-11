@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+
+    <div class="header">
+        <img
+            src="https://b2bm.s3.amazonaws.com/styles/default_image/s3/capgemini-reveals-new-brand-identity-new-messages-to-mark-anniversary.jpg?itok=q-awdRDI">
+        <h1>INSURANCE CLAIM</h1>
+        <div>
+            <h4 style="color: white;">{{user}}</h4>
+            <button type="button" class="btn btn-danger" (click)="logout()">LOGOUT</button>
+        </div>
+    </div>
+
+    <div class="row" id="middleMain">
+        <div class="column side">
+            <div class="card" id="sidecard">
+                <br>
+                <h1><u>INSURED</u></h1>
+                <hr><br>
+                <h2 id="leftside" (click)="showInsuredHome()">Home</h2><br>
+                <h2 id="leftside" (click)="showViewPolicy()">VIEW POLICY</h2><br>
+                <h2 id="leftside" (click)="showViewClaim()">VIEW CLAIM</h2><br>
+                <h2 id="leftside"  (click)="showCreateClaim()">CREATE CLAIM</h2>
+            </div>
+        </div>
+
+        <div class="column middle">
+            <div class="row" id="imagetext" *ngIf="showHome">
+                <div class="column">
+                    <img
+                        src="https://img.freepik.com/free-vector/illustration-family-life-insurance_53876-40781.jpg?size=626&ext=jpg">
+                </div>
+                <div class="column">
+                    <h3>
+                        Here the insured one can find details of his policy.
+                        And based on that he can create claim
+                    </h3>
+                </div>
+            </div>
+            <div *ngIf="showPolicy">
+                <h1><u>YOUR POLICY</u></h1>
+                <div class="card border-dark mb-3" style="max-width: 90rem;" #item1 id="policyDetails">
+                    <div class="card-header" style="font-weight: bold;">Policy Details</div>
+                    <div class="card-body text-dark">
+                        <h1 class="card-title" style="color: black;">Policy Details of {{insuredData.id}}</h1>
+                        <p class="card-text"><b>Policy Number:</b> {{insuredData.policynumber}}</p>
+                        <p class="card-text"><b>Policy Permium:</b> {{insuredData.policypremium | currency :'INR'}}</p>
+                        <p class="card-text"></p>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="showClaim">
+                <h1><u>VIEW CLAIM</u></h1>
+                <div class="card border-dark mb-3" style="max-width: 90rem;" id="policyDetails">
+                    <div class="card-header" style="font-weight: bold;">Claim Details</div>
+                    <div class="card-body text-dark">
+                        <h1 class="card-title" style="color: black;">Claim Details of {{insuredData.id}}</h1>
+                        <p class="card-text"><b>Claim Number</b> : - {{insuredData.claim.claimNumber}}</p>
+                        <p class="card-text"><b>Claim Reason</b> : {{insuredData.claim.claimReason}}</p>
+                        <p class="card-text"><b>Accident Street</b> : {{insuredData.claim.accidentLocationStreet}}</p>
+                        <p class="card-text"><b>Accident City</b> : {{insuredData.claim.accidentCity}}</p>
+                        <p class="card-text"><b>Accident State</b> : {{insuredData.claim.accidentState}}</p>
+                        <p class="card-text"><b>Claim Type</b> : {{insuredData.claim.claimType}}</p>
+                        <p class="card-text"><b>Zip Code</b> : {{insuredData.claim.zipCode}}</p>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="addClaim">
+                <form id="createform" *ngIf="insuredData.claim.claimNumber==undefined">
+                    <h1><u>FILL YOUR DETAILS TO CREATE CLAIM</u></h1>
+                    <h1 style="color: red;">{{errorMessage}}</h1>
+                    <div class="form-group">
+                        <label for="claimnnumber">Claim Number</label>
+                        <input type="text" class="form-control" id="claimnnumber" placeholder="Claim Number"
+                            name="claimnumber" [(ngModel)]="claimNumber" disabled required>
+                    </div>
+                    <div class="form-group">
+                        <label for="claimreason">Claim Reason</label>
+                        <input type="text" class="form-control" id="claimreason" placeholder="Claim Reason"
+                            name="claimReason" [formControl]="claimReason" required>
+                        <span *ngIf="claimReason.touched && claimReason.valid!=true" style="color:red">please fill claim reason properly</span>
+                        </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="street">Accident Location Street</label>
+                            <input type="text" class="form-control" id="street" placeholder="Street"
+                                name="accidentLocation" [formControl]="accidentLocationStreet">
+                                <span *ngIf="accidentLocationStreet.touched && accidentLocationStreet.valid!=true" style="color:red">please fill Accident Street properly</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="city">Accident Location City</label>
+                            <input type="text" class="form-control" id="city" placeholder="City" name="accidentCity"
+                                [formControl]="accidentCity" required>
+                                <span *ngIf="accidentCity.touched && accidentCity.valid!=true" style="color:red">please fill Accident city properly</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="state">Accident Location State</label>
+                            <input type="text" class="form-control" id="state" placeholder="State" name="accidentState"
+                                [formControl]="accidentState" required>
+                                <span *ngIf="accidentState.touched && accidentState.valid!=true" style="color:red">please fill Accident state properly</span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="zip">Accident Location Zip</label>
+                            <input type="text" class="form-control" id="zip" placeholder="Zip Code"
+                                name="accidentLocationZip" [formControl]="zipCode" >
+                                <span *ngIf="zipCode.touched && zipCode.valid!=true" style="color:red">please fill  Zip Code properly and of correct length</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="claimtype">Claim Type</label>
+                        <input type="text" class="form-control" id="claimtype" placeholder="Claim Type" name="claimType"
+                            [formControl]="claimType" required>
+                            <span *ngIf="claimType.touched && claimType.valid!=true" style="color:red">please fill claimType properly</span>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-lg btn-block" (click)="createClaim()">CREATE CLAIM</button>
+                </form>
+                <!--end of create claim-->
+
+                <!--if claim is already created-->
+                <div class="card text-white bg-danger mb-3" style="max-width: 40rem;"
+                    *ngIf="insuredData.claim.claimNumber!=undefined && insuredData.policynumber!=undefined">
+                    <div class="card-header">Claim Created</div>
+                    <div class="card-body">
+                        <!-- <h5 class="card-title">Danger card title</h5> -->
+                        <p class="card-text">
+                            Claim is already created for your policy.<br><br>
+                            You can view your claim using 'View Claim' option
+                        </p>
+                    </div>
+                </div>
+                <!--end if claim is already created-->
+            </div>
+            <!--end of create claim-->
+
+        </div>
+    </div>
+    <div class="footer">
+        <h4>copyright &#169; , 2021</h4>
+    </div>
+</body>
+
+</html>
